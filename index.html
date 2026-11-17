@@ -254,7 +254,6 @@ function renderCopy(){
 function renderResources(){
   const R=D.resources||{};const link=(t,d,u,cta)=>`<section class="box"><h3>${esc(t)}</h3><p>${esc(d)}</p>${u?`<a class="btn ghost small" style="justify-self:start" href="${esc(u)}" target="_blank" rel="noopener">${esc(cta||"Open")}</a>`:`<span class="wait">Waiting on the link from you</span>`}</section>`;
   $("tab-resources").innerHTML=`<div class="res">
-    ${link("How this runs","The week, your part in it, and how you step out over time.",R.process,"Open the doc")}
     ${link("Empty seat calculator","Goes in the first comment of the cost posts.",R.calculator)}
     ${link("7-step hiring guide","Goes in the first comment of the interview posts. No email required.",R.guide)}
     ${link("Book a call","Your calendar link, for the flex and social proof posts.",R.calendar)}
