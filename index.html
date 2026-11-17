@@ -219,7 +219,7 @@ function renderCopy(){
     <h2>${esc(p.title)}</h2>
     <div class="tools"><span class="seg"><a href="#${slug(p)}" class="${S.mode==="preview"?"on":""}">Preview</a><a href="#${slug(p)}/edit" class="${S.mode==="edit"?"on":""}">Edit &amp; comment</a></span><button class="btn ghost small" data-copy="post">Copy post</button><button class="btn ghost small" data-copy="link">Copy link to this post</button></div>
     ${S.mode==="edit"?`<div class="postdoc"><iframe src="${esc(docUrl(p))}" title="${esc(p.title)} in Google Docs" allow="clipboard-read; clipboard-write"></iframe></div>
-    <div class="sub" style="margin-top:8px">Edit and comment like any Google Doc. Not showing? Sign in to Google in this browser, or <a href="${esc(docUrl(p))}" target="_blank" rel="noopener" style="color:var(--ink)">open it in a new tab</a>.</div>`:`
+    <div class="sub" style="margin-top:8px">Type straight into the doc: your changes show as suggestions, so we see exactly what you changed and learn from it. Not showing? Sign in to Google in this browser, or <a href="${esc(docUrl(p))}" target="_blank" rel="noopener" style="color:var(--ink)">open it in a new tab</a>.</div>`:`
     <section class="field"><div class="label">Hook options</div>
       <ol class="hooks">${hooks(p.hooks).map((h,i)=>`<li class="hook ${h.pick?"pick":""}"><span class="n">${i+1}</span><p>${br(h.t)}</p>${h.pick?`<span class="pickchip">Our pick · it opens the post</span>`:""}</li>`).join("")}</ol></section>
     <section class="field"><div class="label">The post, as it shows on LinkedIn</div>
