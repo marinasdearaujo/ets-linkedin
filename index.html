@@ -137,8 +137,8 @@ const D={"week": "2026-11-17", "stage": 1, "doc": "https://docs.google.com/docum
 const STEPS=[
   {k:"idea",t:"Idea",h:"Real moments from your calls, podcasts and posts, waiting for a slot."},
   {k:"draft",t:"Draft",h:"Written from your own words. Not checked yet."},
-  {k:"ready",t:"Ready for you",h:"In the Google Doc for you to edit. Anything in orange needs a line from you first."},
-  {k:"jay",t:"With you",h:"You're editing and posting. Send back the version you posted and we compare."},
+  {k:"qa",t:"Quality check",h:"Every post passes 5 checks before it reaches you. Grey usually means it's waiting on a line from you."},
+  {k:"ready",t:"Ready for you",h:"In the Google Doc for you to edit and post. It stays here until it's live."},
   {k:"scheduled",t:"Scheduled",h:"In Buffer with photo and first comment (from week 3)."},
   {k:"live",t:"Live",h:"Posted. Numbers logged at 24 and 72 hours."}
 ];
@@ -174,7 +174,7 @@ function route(){
 }
 
 function renderProduction(){
-  const all=[...ideas.map(i=>({...i,stage:"idea"})),...posts.map(p=>({...p,stage:p.stage==="qa"?"ready":p.stage}))];
+  const all=[...ideas.map(i=>({...i,stage:"idea"})),...posts.map(p=>({...p,stage:p.stage==="jay"?"ready":p.stage}))];
   const counts=Object.fromEntries(STEPS.map(s=>[s.k,all.filter(p=>(p.stage||"draft")===s.k).length]));
   if(!S.step){const f=STEPS.find(s=>s.k!=="idea"&&counts[s.k]);S.step=f?f.k:"idea"}
   const st=STEPS.find(s=>s.k===S.step);
@@ -185,8 +185,10 @@ function renderProduction(){
 }
 function card(p){
   if(p.stage==="idea")return `<div class="card"><div class="top"><span>Idea${p.painLabel?" · "+esc(p.painLabel):""}</span></div><div class="title">${esc(p.title)}</div><div class="preview" style="-webkit-line-clamp:4">${br(p.angle||"")}</div>${p.source?`<div class="sub">${esc(p.source)}</div>`:""}</div>`;
+  const g=gs(p),passed=g.filter(s=>s==="pass").length;
   return `<a class="card" href="#${slug(p)}"><div class="top"><span>${esc(p.day)}${p.date?" "+fmt(p.date):""}${p.pillar?" · "+esc(p.pillar):""}</span>${p.test?`<span class="chip exp">${esc(p.test.code)}</span>`:""}</div>
     <div class="title">${esc(p.title)}</div>
+    <div class="gates">${g.map(s=>`<span class="g ${s}"></span>`).join("")}<span>${passed}/5 checks</span></div>
     <div class="preview">${esc(p.draft)}</div>${p.needs?`<div class="needs">Needs from you: ${esc(p.needs)}</div>`:""}</a>`;
 }
 
@@ -224,7 +226,7 @@ function renderCopy(){
       ${p.test?`<div class="item"><div class="label">What we're testing</div><p><span class="chip exp">${esc(p.test.code)}</span> ${esc(p.test.title)}</p><p class="sub">${esc(p.test.variable||"")}</p></div>`:""}
     </section>
     <section class="box"><h3>Status</h3>
-      <div class="status-line"><span class="chip">${esc((STEPS.find(s=>s.k===(p.stage==="qa"?"ready":p.stage))||{}).t||"")}</span><span style="display:flex;gap:4px">${g.map(s=>`<span class="g ${s}"></span>`).join("")}</span><span class="sub">${passed}/5 checks</span></div>
+      <div class="status-line"><span class="chip">${esc((STEPS.find(s=>s.k===(p.stage==="jay"?"ready":p.stage))||{}).t||"")}</span><span style="display:flex;gap:4px">${g.map(s=>`<span class="g ${s}"></span>`).join("")}</span><span class="sub">${passed}/5 checks</span></div>
       <div class="checks">${GATES.map(([k,t],i)=>`<div><span class="g ${g[i]}"></span>${esc(t)}</div>`).join("")}</div>
     </section>
   </aside></div>`;
