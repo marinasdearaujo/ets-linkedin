@@ -96,7 +96,11 @@ a.card:hover{border-color:var(--muted)}
 .seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
 .seg a{font-size:12.5px;font-weight:500;padding:5px 12px;text-decoration:none;color:var(--ink)}
 .seg a.on{background:var(--ink);color:var(--card)}
-.postdoc{border:1px solid var(--line);border-radius:12px;overflow:hidden;height:78vh;min-height:560px}
+.postdoc{border:1px solid var(--line);border-radius:12px;overflow:hidden;height:calc(100vh - 230px);min-height:600px}
+.layout.editing{grid-template-columns:180px minmax(0,1fr)}
+.layout.editing .rail{display:none}
+.layout.editing .paper{padding:24px 24px 28px}
+.layout.editing .paper h2{font-size:22px}
 .postdoc iframe{width:100%;height:100%;border:0;display:block}
 .photo-drop{border-top:1px solid var(--line);background:var(--bg);padding:14px 18px;display:grid;gap:10px}
 .photo-drop .row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:13.5px}
@@ -120,6 +124,7 @@ a.card:hover{border-color:var(--muted)}
 .score div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
 .score b{display:block;font-family:var(--mono);font-size:24px;font-weight:500}
 .score span{font-size:12px;color:var(--muted)}
+@media (max-width:1100px){.layout.editing{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:1100px){.layout{grid-template-columns:minmax(0,1fr) 300px}.list{grid-column:1/-1;position:static;display:flex;overflow-x:auto;gap:6px}.list a{min-width:160px}}
 @media (max-width:820px){.layout{grid-template-columns:minmax(0,1fr)}.rail{position:static}.paper{padding:28px 20px}.docframe{height:75vh}}
 @media (max-width:520px){.score{grid-template-columns:1fr 1fr}}
@@ -207,7 +212,7 @@ function renderCopy(){
   const w=p.why||{};
   const item=(l,v,c)=>v?`<div class="item"><div class="label">${l}</div><p class="${c||""}">${esc(v)}</p></div>`:"";
   const g=gs(p),passed=g.filter(s=>s==="pass").length;
-  $("tab-copy").innerHTML=`<div class="layout">
+  $("tab-copy").innerHTML=`<div class="layout ${S.mode==="edit"?"editing":""}">
   <nav class="list" aria-label="Posts">${posts.map(x=>`<a href="#${slug(x)}" class="${x.id===p.id?"on":""}"><span class="d">${esc(x.day)}${x.date?" "+fmt(x.date):""}</span><span class="t">${esc(x.title)}</span>${x.needs?`<span class="need">Needs a line from you</span>`:""}</a>`).join("")}</nav>
   <article class="paper">
     <div class="eyebrow">${esc(DAYS[p.day]||p.day)}${p.date?" · "+fmt(p.date):""}${p.pillar?" · "+esc(p.pillar):""}</div>
